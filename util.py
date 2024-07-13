@@ -1,42 +1,10 @@
 
 import random
 import statistics
+import matplotlib
+import matplotlib.pyplot
 
-def set_stage():
-    """
-    """
-    stomach_capacity = 1
-    eaten_amount = 1
-
-    while check_status_value(stomach_capacity, eaten_amount) == False:
-        stomach_capacity = random.random()
-        eaten_amount = random.random()
-    
-    greedy_rate = random.random()
-
-    return stomach_capacity, eaten_amount, greedy_rate
-
-def check_status_value(stomach_capacity, eaten_amount):
-    """
-    """
-    stomach_leftover = stomach_capacity - eaten_amount
-    
-    if stomach_leftover <= 0:
-        return False
-
-def set_stage_value(stage:list):
-    """
-    """
-    stomach_capacity = stage[0]
-    eaten_amount = stage[1]
-    greedy_rate = stage[2]
-
-    return stomach_capacity, eaten_amount, greedy_rate
-
-def check_stuff_states(
-    require_amount:float,
-
-    ):
+def check_stuff_states(require_amount:float):
     """
     """
 
@@ -58,3 +26,19 @@ def get_mean(target_list:list):
     mean_value = statistics.mean(target_list)
 
     return mean_value
+
+def create_scatter_plot(target_list:list):
+    """
+    """
+    scatter = matplotlib.pyplot.scatter(range(0, len(target_list), 1), target_list)
+    matplotlib.pyplot.show()
+
+    return scatter
+
+def create_histgram(target_list:list, bins:int):
+    """
+    """
+    hist = matplotlib.pyplot.hist(target_list, bins = bins)
+    matplotlib.pyplot.show()
+
+    return hist

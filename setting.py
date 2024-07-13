@@ -6,7 +6,7 @@ Humanity-Evolution Experiment
     Does the humanity evolve in limited food amount situation?
 """
 
-stage_max = 100
-feed_rate = 0.1
-round = 50
-replicate = 50
+stage_max = 1000
+feed_rate = 0.5
+round = 1000
+replicate = 1000

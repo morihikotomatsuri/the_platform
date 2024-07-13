@@ -5,10 +5,41 @@
 Humanity-Evolution Experiment
     Does the humanity evolve in limited food amount situation?
 """
+import random
 
 import util
 import setting
 
+def set_stage():
+    """
+    """
+    stomach_capacity = 1
+    eaten_amount = 1
+
+    while check_status_value(stomach_capacity, eaten_amount) == False:
+        stomach_capacity = random.random()
+        eaten_amount = random.random()
+    
+    greedy_rate = random.random()
+
+    return stomach_capacity, eaten_amount, greedy_rate
+
+def check_status_value(stomach_capacity:float, eaten_amount:float):
+    """
+    """
+    stomach_leftover = stomach_capacity - eaten_amount
+    
+    if stomach_leftover <= 0:
+        return False
+
+def set_stage_value(stage:list):
+    """
+    """
+    stomach_capacity = stage[0]
+    eaten_amount = stage[1]
+    greedy_rate = stage[2]
+
+    return stomach_capacity, eaten_amount, greedy_rate
     
 def feeding(
         stage_max:int,
@@ -20,7 +51,7 @@ def feeding(
     alive_stages = []
     for i in range(0,stage_max,1):
         if i < len(stages):
-            own_stomach_capacity, own_eaten_amount, own_greedy_rate = util.set_stage_value(stages[i])
+            own_stomach_capacity, own_eaten_amount, own_greedy_rate = set_stage_value(stages[i])
             require_amount = (own_stomach_capacity * own_greedy_rate) - own_eaten_amount
 
             if not util.check_stuff_states(require_amount):
@@ -48,7 +79,7 @@ def play_platform():
     stages = []
     for stage in range(0,stage_max,1):
         # set status of stage
-        stomach_capacity, eaten_amount, greedy_rate = util.set_stage()
+        stomach_capacity, eaten_amount, greedy_rate = set_stage()
 
         # append status of one stage to tuple
         stage_status = (stomach_capacity, eaten_amount, greedy_rate)
@@ -73,7 +104,7 @@ def play_platform():
     eaten_amount_summary_list = []
     greedy_rate_summary_list = []
     for i in range(0, len(alive_stages),1):
-        stomach_capacity, eaten_amount, greedy_rate = util.set_stage()
+        stomach_capacity, eaten_amount, greedy_rate = set_stage()
         stomach_capacity_summary_list.append(stomach_capacity)
         eaten_amount_summary_list.append(eaten_amount)
         greedy_rate_summary_list.append(greedy_rate)
