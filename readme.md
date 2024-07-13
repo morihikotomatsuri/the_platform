@@ -31,13 +31,18 @@ Python 3.9.10
 
 1. 準備
 
-    以下のコマンドで必要なツールをダウンロードする。
-    
     ```
-    python3 -m pip install matplotlib
+    # move to execute directory
+    cd /Users/toma/GitHub/the_platform
+
+    # activate venv
+    source venv/bin/activate    
+    
+    # install python libraries
+    pip install -r requirements.txt
     ```
 
-1. 以下のコマンドで実行する。
+1. 実行
 
     ```
     python3 main.py
@@ -46,8 +51,19 @@ Python 3.9.10
 ---
 ### 解析内容
 
-本解析では複数回エサの量を変えながらサイクルを回し、エサの量によって人間性がどのように変化するか検討する。
+まず以下を設定する。
+- ステージ数（str）
+- ステージ数に対するエサの割合（0-1, float）
+- 実験回数（>1, int）
 
-設定では以下の2点を設定する。
-- 1サイクルで設定する階層の深さ（深いほど下は餌の量が少なくなる)
-- 全部で何サイクル回すのか
+ステージは以下を持っている。
+- 胃袋の大きさ（0-1, float）
+- 満たされ具合（0-1, float）
+- 食欲（0-1, float）
+満たされ具合×食欲分食べる。
+
+残ったエサが次のステージに落ちる。
+
+全ステージを通ったら１ラウンド終了。
+
+ラウンド後、ステージを組み替える。
