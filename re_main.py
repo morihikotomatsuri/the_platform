@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     require_amount = util.calc_require_amount(stomach_capacity,greedy_rate,eaten_amount)
 
-    if not util.check_stuff_states:
+    if not util.check_stuff_states(require_amount):
         food_amount = food_amount - require_amount
 
     print(food_amount)
