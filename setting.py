@@ -7,6 +7,7 @@ Humanity-Evolution Experiment
 """
 
 stage_max = 1000
-feed_rate = 0.5
+# automatically set in main.py
+#feed_rate = 0.5
 round = 1000
-replicate = 1000
+replicate = 100

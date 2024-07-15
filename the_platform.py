@@ -66,11 +66,11 @@ def feeding(
     return alive_stages
 
 
-def play_platform():
+def play_platform(feed_rate:float):
     """
     """
     stage_max = setting.stage_max
-    feed_rate = setting.feed_rate
+    #feed_rate = setting.feed_rate
     round = setting.round
 
     food_amount = stage_max * feed_rate
