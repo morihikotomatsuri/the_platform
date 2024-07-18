@@ -17,4 +17,4 @@ stage_max = 100
 round = 1000
 
 # number of replicate in the same feed rate
-replicate = 100
+replicate = 50

@@ -42,3 +42,4 @@ def create_histgram(target_list:list, bins:int):
     matplotlib.pyplot.show()
 
     return hist
+

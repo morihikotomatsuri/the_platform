@@ -14,16 +14,19 @@ if __name__ == '__main__':
 
     # change feed_rate 0.1-1.0
     result_replicate=[]
-    for i in range(1, 100, 1):
+    for i in range(1, 1000, 1):
+        feed_rate = i * 0.01
+        print("feed_rate = " + str(feed_rate))
+        
         # run platform func a set number of replicates
         result = []
         for j in range(1, setting.replicate, 1):
-            feed_rate = i * 0.01
+
             require_amount = the_platform.play_platform(feed_rate)
             result.append(require_amount)
             result_mean = util.get_mean(result)
+
         result_replicate.append(result_mean)
-        print("feed_rate = " + str(feed_rate))
     
     # create summary plot
     scatter = util.create_scatter_plot(result_replicate)
