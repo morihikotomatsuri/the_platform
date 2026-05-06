@@ -2,445 +2,412 @@
 # func.py : functions of Individual-Based Biological Model
 
 """
-functions:
-    class universalFunc()
-        get_parameters_from_list(list, element_num)
-        plot_hist(list)
-        plot_dot(list)
-        culc_mean(list)
-        start_time()
-        end_time(start)
-        calc_mean_set_list(list, new_list)
-    class the_platform(universalFunc)
-        set_initialize_variant(floor,food)
-        set_person_parameters()
-        set_HOLE(floor_num)
-        get_parameters_from_list(list, element_num)
-        get_parameters(hole)
-        lunchtime(hole, lunch)
-        replenish_surviver(hole)
-        check_humanity(hole)
-        plot_hist(list)
-        plot_line(list)
-        wake_up(list)
-        culc_mean(list)
-        start_time()
-        end_time(start)
-        spend_month(hole, food_amount, times)
-        calc_mean_set_list(list, new_list)
+Individual-Based Biological Model for The Platform simulation.
+
+Classes:
+    UniversalFunc: Base class with common utility functions.
+    ThePlatform: Main simulation class for the platform experiment.
 """
 
-from os import remove
 import random
 from statistics import mean
 import matplotlib.pyplot as plt
-import random
 import time
 
-class universalFunc():
-    def recommend(self):
-        print("")
 
-    def get_parameters_from_list(self, list, element_num):
-        """
+class UniversalFunc:
+    """Base class with common utility functions."""
+
+    @staticmethod
+    def get_parameter_from_list(items, index):
+        """Extract a single element from a list by index.
+        
         Args:
-        Return:
-            element *
-
-        -----
-        element *:
-            element is sth indicated by element_num in list.
-        """
-
-        element = list[element_num]
-
-        return element
-
-    def plot_hist(list):
-        """
-        Args:
-            list list:
-                list is the numbers to plot histgram.
-        Return:
-            none
-        ---------
-        """
-
-        plt.xlim(0.1, 0.5) 
-        plt.hist(list)
-        plt.show()
-
-        return
-
-    def plot_dot(list):
-        """
-        Args:
-            list list:
-                list is the numbers to plot histgram.
-        Return:
-            none
-        ---------
-        """
-
-        plt.plot(list, "bo")
-        plt.show()
-
-        return
-
-    def culc_mean(self, list):
-        """
-        Args:
-            list list:
-                list is the target to shuffle.
-        Return:
-            mean_nim float:
-                mean_num is the mean number of input list.
-        ----------
-        mean_nim float:
-            mean_num is the mean number of input list.
-        """
-
-        mean_num = mean(list)
-
-        return mean_num
-
-    def calc_mean_set_list(self, list, new_list):
-        """
-        Args:
-            list list:
-                list is the target list, not dict.
-            new_list list:
-                new_list is the result append list.
-        Return:
-            new_list list:
-        ----------
-        new_list list:
-            new_list is the result append list.
-        mean int:
-            mean is the result of calculate.
-        """
-
-        new_list = []
-        mean = self.culc_mean(list)
-        new_list.append(mean)
-
-        return new_list
-
-    def start_time(self):
-        """
-        Args:
-        Return:
-        ----------
-        start float:
-            start is the time stamp indicating start time.
-        """
-
-        start = time.time()
-
-        return start
-
-    def end_time(self,start):
-        """
-        Args:
-            start float:
-                start is the time stamp indicating start time.
-        Return:
-        ----------
-        elapsed_time float:
-            elapsed_time is the time stamp indicating the end.
-        """
-
-        elapsed_time = time.time() - start
-        print(elapsed_time/3600/24, "days")
-
-        return
-
-class the_platform(universalFunc):
-    def recommend(self):
-        print("")
-
-    def set_initialize_variant(floor,food):
-        """
-        Args:
-            floor int:
-                floor is the size of HOLE floors. 
-            food int:
-                food is the initial food amount.
-        Result:
-        ----------
-        """
-
-        return floor,food
-
-    def set_person_parameters(self):
-        """
-        Args:
+            items: List to extract from.
+            index: Index of the element to extract.
+            
         Returns:
-            person list
-        -----
-        food_require float:
-            food_require is the amount of required food amount.
-        food_greedy float:
-            food_greedy is the amount of extra food amount to be full.
-        servive_flag bool:
-            servive_flag is the index of human life (dead or alive).
-        person list:
-            person is the list include parameters above.
+            The element at the specified index.
         """
+        return items[index]
 
+    @staticmethod
+    def plot_histogram(data, x_limit=(0, 1)):
+        """Plot histogram of data.
+        
+        Args:
+            data: List of numbers to plot.
+            x_limit: Tuple of (min, max) for x-axis limits.
+        """
+        plt.xlim(x_limit[0], x_limit[1]) 
+        plt.hist(data)
+        plt.show()
+
+    @staticmethod
+    def plot_scatter(data):
+        """Plot scatter plot of data.
+        
+        Args:
+            data: List of numbers to plot.
+        """
+        plt.plot(data, "bo")
+        plt.show()
+
+    @staticmethod
+    def calculate_mean(data):
+        """Calculate mean of a list.
+        
+        Args:
+            data: List of numbers.
+            
+        Returns:
+            Mean value of the list.
+        """
+        return mean(data)
+
+    @staticmethod
+    def calculate_mean_and_append(data):
+        """Calculate mean of data and return as a list.
+        
+        Args:
+            data: List of numbers.
+            
+        Returns:
+            List containing the mean value.
+        """
+        return [UniversalFunc.calculate_mean(data)]
+
+    @staticmethod
+    def start_timer():
+        """Start a timer.
+        
+        Returns:
+            Start time timestamp.
+        """
+        return time.time()
+
+    @staticmethod
+    def end_timer(start_time):
+        """End timer and print elapsed time in days.
+        
+        Args:
+            start_time: Start time timestamp.
+        """
+        elapsed_time = time.time() - start_time
+        days = elapsed_time / 3600 / 24
+        print(f"Elapsed time: {days:.6f} days")
+
+
+class ThePlatform(UniversalFunc):
+    """Individual-Based Biological Model for The Platform simulation."""
+
+    @staticmethod
+    def create_inhabitant():
+        """Create a new inhabitant with random food requirements.
+        
+        Returns:
+            List containing [food_require, food_greedy, alive_flag, food_consumed].
+        """
         food_require = random.random()
         food_greedy = random.uniform(food_require, 1)
-        servive_flag = True
+        alive_flag = True
+        food_consumed = 0
+        return [food_require, food_greedy, alive_flag, food_consumed]
 
-        person = [food_require, food_greedy, servive_flag]
-
-        return person
-
-    def set_HOLE(self,hole_depth):
-        """
-        Args:
-            hole_depth float:
-                hole_depth is the size of HOLE list. 
-        Returns:
-            HOLE list
-        -----
-        HOLE list:
-            HOLE is the experimental building for THE PLATFORM.
-        man list:
-            man is the list include parameters named food_require and food_greedy in set_person_parameters.
-        """
-
-        HOLE=[]
-        for i in range(hole_depth):
-            man = self.set_person_parameters()
-            HOLE.append(man)
+    def create_hole(self, hole_depth):
+        """Create the experimental building with inhabitants.
         
-        return HOLE
-
-    def get_parameters(hole):
-        """
         Args:
-            hole list:
-                hole is the experimental building for THE PLATFORM.
-        Return:
-            patiant_food_require_list float
-            patiant_food_greedy_list float
-        -----
-        patiant_food_require_list list:
-            patiant_food_require is the list of required food amount.
-        patiant_food_greedy_list list:
-            patiant_food_greedy is the list of extra food amount to be full.
-        hole_depth int:
-            hole_depth is the floor number of THE HOLE.
-        floor int:
-            floor is the target floor number.
-        patiant list:
-            patiant is the list housed in the HOLE
-        patiant_food_require float:
-            patiant_food_require is the amount of required food amount.
-        patiant_food_greedy float:
-            patiant_food_greedy is the amount of extra food amount to be full.
-
-        """
-
-        patiant_food_require_list = []
-        patiant_food_greedy_list = []
-        hole_depth = len(hole)
-
-        for floor in range(hole_depth):
-            patiant = hole[floor]
-            patiant_food_require = self.get_parameters_from_list(patiant, 0)
-            patiant_food_greedy = self.get_parameters_from_list(patiant, 1)
-
-            patiant_food_require_list.append(patiant_food_require)
-            patiant_food_greedy_list.append(patiant_food_greedy)
-
-        return patiant_food_require_list, patiant_food_greedy_list
-
-    def lunchtime(self, hole, lunch):
-        """
-        Args:
-            hole list:
-                hole is the experimental building for THE PLATFORM.
-            lunch float:
-                lunch is the food amount to serve to the HOLE.
-        Return:
-            hole list:
-                hole is the experimental building for THE PLATFORM.
-        -----
-        last_lunch float:
-            last_lunch is the last food amount after served to each floor.
-        floor int:
-            floor is the target floor number.
-        hole_depth int:
-            hole_depth is the size of the HOLE.
-        patiant list:
-            patiant is the list housed in the HOLE.
-        patiant_food_require float:
-            patiant_food_require is the amount of required food amount.
-        patiant_food_greedy float:
-            patiant_food_greedy is the amount of extra food amount to be full.
-        """
-
-        last_lunch = lunch
-        hole_depth = len(hole)
-
-        for floor in range(hole_depth):
-            patiant = hole[floor]
-            patiant_food_require = self.get_parameters_from_list(patiant, 0)
-            patiant_food_greedy = self.get_parameters_from_list(patiant, 1)
-
-            if patiant_food_greedy <= last_lunch:
-                last_lunch -= patiant_food_greedy
-            elif patiant_food_require <= last_lunch:
-                last_lunch -= patiant_food_require
-            else:
-                last_lunch = 0
-                patiant[2] = 0
-        
-            if last_lunch < 0:
-                last_lunch = 0
-        
-        return hole
-
-    def replenish_surviver(self, hole):
-        """
-        Args:        
-            hole list:
-                hole is the experimental building for THE PLATFORM.
-        Return:
-            hole list:
-                hole is the result of the lunchtime.
-        -----
-        floor int:
-            floor is the target floor number.
-        hole_depth int:
-            hole_depth is the size of the HOLE.
-        patiant list:
-            patiant is the list housed in the HOLE
-        man list:
-            man is the list include parameters in set_person_parameters.
-        """
-
-        hole_depth = len(hole)
-
-        for floor in range(hole_depth):
-            patiant = hole[floor]
+            hole_depth: Number of floors in the hole.
             
-            if patiant[2] == 0:
-                man = self.set_person_parameters()
-                hole[floor] = man
+        Returns:
+            List of inhabitants, each with food requirements.
+        """
+        return [self.create_inhabitant() for _ in range(hole_depth)]
+
+    def extract_requirements(self, hole):
+        """Extract food requirements from all inhabitants.
+        
+        Args:
+            hole: List of inhabitants.
+            
+        Returns:
+            Tuple of (required_food_list, greedy_food_list).
+        """
+        required_list = [inhabitant[0] for inhabitant in hole]
+        greedy_list = [inhabitant[1] for inhabitant in hole]
+        return required_list, greedy_list
+
+    def distribute_food(self, hole, food_amount):
+        """Distribute food among inhabitants, prioritizing survival.
+        
+        Tracks actual food consumed for each inhabitant to calculate selfishness score.
+        
+        Args:
+            hole: List of inhabitants [food_require, food_greedy, alive_flag, food_consumed].
+            food_amount: Total food to distribute.
+            
+        Returns:
+            Modified hole with updated inhabitant states and food_consumed values.
+        """
+        remaining_food = food_amount
+
+        for inhabitant in hole:
+            food_required, food_greedy, alive_flag = inhabitant[0], inhabitant[1], inhabitant[2]
+            food_consumed = 0
+            
+            if food_greedy <= remaining_food:
+                food_consumed = food_greedy
+                remaining_food -= food_greedy
+            elif food_required <= remaining_food:
+                food_consumed = food_required
+                remaining_food -= food_required
+            else:
+                remaining_food = 0
+                alive_flag = 0  # Mark inhabitant as dead
+            
+            # Update inhabitant data: [food_require, food_greedy, alive_flag, food_consumed]
+            inhabitant[2] = alive_flag
+            if len(inhabitant) < 4:
+                inhabitant.append(food_consumed)
+            else:
+                inhabitant[3] = food_consumed
+            
+            remaining_food = max(0, remaining_food)
+        
+        return hole
+
+    def replace_dead_inhabitants(self, hole):
+        """Replace dead inhabitants with new ones.
+        
+        Args:
+            hole: List of inhabitants.
+            
+        Returns:
+            Updated hole with dead inhabitants replaced.
+        """
+        for i, inhabitant in enumerate(hole):
+            if inhabitant[2] == 0:  # Dead
+                hole[i] = self.create_inhabitant()
 
         return hole
 
-    def check_humanity(self, hole):
-        """
-        Args:
-            hole list:
-                hole is the experimental building for THE PLATFORM.
-        Return:
-        humanity_list list:
-            humanity_list is the result of the experiment.
-        ----------
-        hole_depth int:
-            hole_depth is the size of the HOLE.
-        humanity_list list:
-            humanity_list is the result of the experiment.
-        require float:
-            require is the amount of required food amount.
-        greedy float:
-            greedy is the amount of extra food amount to be full.
-        """
-
-        humanity_list = []
-        hole_depth = len(hole)
-
-        for floor in range(hole_depth):
-            patiant = hole[floor]
-            require = patiant[0]
-            greedy = patiant[1]
-
-            humanity = greedy - require
-            humanity_list.append(humanity)
-
-        return humanity_list
+    def calculate_humanity_levels(self, hole):
+        """Calculate humanity level for each inhabitant.
         
-    def plot_hist(self, list):
-        """
+        Humanity level = food_greedy - food_required (measure of satisfaction capacity).
+        
         Args:
-            list list:
-                list is the numbers to plot histgram.
-        Return:
-            none
-        ---------
+            hole: List of inhabitants.
+            
+        Returns:
+            List of humanity levels.
         """
+        return [inhabitant[1] - inhabitant[0] for inhabitant in hole]
 
-        plt.xlim(0, 1) 
-        plt.hist(list)
+    @staticmethod
+    def shuffle_inhabitants(inhabitants):
+        """Shuffle the order of inhabitants (simulate randomness in each round).
+        
+        Args:
+            inhabitants: List of inhabitants.
+            
+        Returns:
+            Shuffled list of inhabitants.
+        """
+        random.shuffle(inhabitants)
+        return inhabitants
+
+    @staticmethod
+    def calculate_selfishness_score(food_consumed, food_required, food_greedy):
+        """Calculate selfishness score based on actual consumption.
+        
+        Selfishness score = (food_consumed - food_required) / (food_greedy - food_required)
+        - 0 = restrained (high humanity)
+        - 1 = selfish (low humanity)
+        
+        Args:
+            food_consumed: Actual amount of food consumed.
+            food_required: Minimum required amount.
+            food_greedy: Amount needed to be fully satisfied.
+            
+        Returns:
+            Selfishness score in range [0, 1]. Returns 0 if denominator is 0.
+        """
+        denominator = food_greedy - food_required
+        if denominator <= 0:
+            return 0
+        
+        numerator = min(food_consumed, food_greedy) - food_required
+        score = max(0, min(1, numerator / denominator))
+        return score
+
+    @staticmethod
+    def calculate_altruism_score(selfishness_score):
+        """Calculate altruism score as complement of selfishness.
+        
+        Altruism score = 1 - selfishness_score
+        - High altruism (restraint) = high score
+        - Low altruism (selfishness) = low score
+        
+        Args:
+            selfishness_score: Selfishness score in range [0, 1].
+            
+        Returns:
+            Altruism score in range [0, 1].
+        """
+        return 1 - selfishness_score
+
+    def calculate_average_selfishness(self, hole):
+        """Calculate average selfishness score for all inhabitants.
+        
+        Args:
+            hole: List of inhabitants.
+            
+        Returns:
+            Average selfishness score.
+        """
+        if not hole:
+            return 0
+        
+        selfishness_scores = []
+        for inhabitant in hole:
+            food_required = inhabitant[0]
+            food_greedy = inhabitant[1]
+            food_consumed = inhabitant[3] if len(inhabitant) > 3 else 0
+            
+            score = self.calculate_selfishness_score(food_consumed, food_required, food_greedy)
+            selfishness_scores.append(score)
+        
+        return self.calculate_mean(selfishness_scores) if selfishness_scores else 0
+
+    def order_inhabitants_by_score(self, hole, score_type='selfishness', reverse=True):
+        """Order inhabitants by selfishness or altruism score.
+        
+        Args:
+            hole: List of inhabitants.
+            score_type: 'selfishness' or 'altruism'.
+            reverse: If True, order from highest to lowest score.
+            
+        Returns:
+            Re-ordered hole based on the specified score type.
+        """
+        scores = []
+        for inhabitant in hole:
+            food_required = inhabitant[0]
+            food_greedy = inhabitant[1]
+            food_consumed = inhabitant[3] if len(inhabitant) > 3 else 0
+            
+            selfishness = self.calculate_selfishness_score(food_consumed, food_required, food_greedy)
+            
+            if score_type == 'altruism':
+                score = self.calculate_altruism_score(selfishness)
+            else:  # selfishness
+                score = selfishness
+            
+            scores.append((inhabitant, score))
+        
+        # Sort by score
+        scores.sort(key=lambda x: x[1], reverse=reverse)
+        return [inhabitant for inhabitant, score in scores]
+
+    def simulate_scenario(self, hole, food_amount, num_rounds, scenario_type='A'):
+        """Simulate a scenario with specific ordering rules.
+        
+        Scenario A: Random order (baseline)
+        Scenario B: Order by selfishness (selfish individuals get priority)
+        Scenario C: Order by altruism (altruistic individuals get priority)
+        
+        Args:
+            hole: List of inhabitants.
+            food_amount: Food to distribute each round.
+            num_rounds: Number of rounds to simulate.
+            scenario_type: 'A', 'B', or 'C'.
+            
+        Returns:
+            Updated hole after simulation.
+            List of average selfishness scores over time.
+        """
+        selfishness_history = []
+        
+        for _ in range(num_rounds):
+            # Order inhabitants based on scenario
+            if scenario_type == 'B':
+                hole = self.order_inhabitants_by_score(hole, score_type='selfishness', reverse=True)
+            elif scenario_type == 'C':
+                hole = self.order_inhabitants_by_score(hole, score_type='altruism', reverse=True)
+            else:  # Scenario A - random
+                hole = self.shuffle_inhabitants(hole)
+            
+            # Distribute food and track consumption
+            hole = self.distribute_food(hole, food_amount)
+            
+            # Record average selfishness before replacing dead inhabitants
+            avg_selfishness = self.calculate_average_selfishness(hole)
+            selfishness_history.append(avg_selfishness)
+            
+            # Replace dead inhabitants with new ones
+            hole = self.replace_dead_inhabitants(hole)
+        
+        return hole, selfishness_history
+
+    def plot_scenario_comparison(self, scenarios_data, scenario_labels, title="Selfishness Evolution"):
+        """Plot line graph comparing average selfishness across scenarios.
+        
+        Args:
+            scenarios_data: Dict with scenario names as keys and list of selfishness histories as values.
+            scenario_labels: Dict with scenario names as keys and display labels as values.
+            title: Title for the plot.
+        """
+        plt.figure(figsize=(12, 6))
+        
+        colors = {'A': 'blue', 'B': 'red', 'C': 'green'}
+        
+        for scenario_name, history_list in scenarios_data.items():
+            # Average the history if multiple runs exist
+            avg_history = self.calculate_mean_and_append([h for run_history in history_list for h in run_history])
+            label = scenario_labels.get(scenario_name, scenario_name)
+            color = colors.get(scenario_name, 'black')
+            
+            plt.plot(range(len(avg_history[0] if isinstance(avg_history[0], list) else avg_history)), 
+                     avg_history[0] if isinstance(avg_history[0], list) else avg_history,
+                     label=label, color=color, linewidth=2, marker='o', markersize=3)
+        
+        plt.xlabel('Generation')
+        plt.ylabel('Average Selfishness Score')
+        plt.title(title)
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
         plt.show()
 
-        return
-
-    def plot_dot(self, list):
-        """
-        Args:
-            list list:
-                list is the numbers to plot histgram.
-        Return:
-            none
-        ---------
-        """
-
-        plt.plot(list, "bo")
-        plt.show()
-
-        return
-
-    def wake_up(self, list):
-        """
-        Args:
-            list list:
-                list is the target to shuffle.
-        Return:
-            list list:
-                list is the shuffled target.
-        ----------
-        """
-
-        random.shuffle(list)
-
-        return list
-
-    def spend_month(self, hole, food_amount, times):
-        """
-        Args:
-            hole list:
-                hole is the experimental building for THE PLATFORM.
-            food_amount int:
-                food_amount is the served food amount.
-            times int:
-                times is the number of rounds.
-        Return:
-            hole list:
-        ----------
-        """
-
-        for i in range(times):
-            hole = self.lunchtime(hole, food_amount)
-            hole = self.replenish_surviver(hole)
-            hole = self.wake_up(hole)
+    def plot_distribution_subplots(self, hole, scenario_labels, num_scenarios=3):
+        """Plot histograms of selfishness distribution for each scenario.
         
-        return hole
-    
-    def start_time(self):
-        """
         Args:
-        Return:
-        ----------
-        start float:
-            start is the time stamp indicating start time.
+            hole: Final state of inhabitants from each scenario.
+            scenario_labels: Labels for each scenario.
+            num_scenarios: Number of scenarios.
         """
-
-        start = time.time()
-
-        return start
+        fig, axes = plt.subplots(1, num_scenarios, figsize=(15, 4))
+        
+        colors = ['blue', 'red', 'green']
+        
+        for idx, (scenario_name, inhabitants) in enumerate(hole.items()):
+            selfishness_scores = []
+            for inhabitant in inhabitants:
+                food_required = inhabitant[0]
+                food_greedy = inhabitant[1]
+                food_consumed = inhabitant[3] if len(inhabitant) > 3 else 0
+                
+                score = self.calculate_selfishness_score(food_consumed, food_required, food_greedy)
+                selfishness_scores.append(score)
+            
+            axes[idx].hist(selfishness_scores, bins=20, color=colors[idx], alpha=0.7, edgecolor='black')
+            axes[idx].set_title(scenario_labels.get(scenario_name, scenario_name))
+            axes[idx].set_xlabel('Selfishness Score')
+            axes[idx].set_ylabel('Frequency')
+            axes[idx].set_xlim(0, 1)
+        
+        plt.tight_layout()
+        plt.show()

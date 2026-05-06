@@ -1,14 +1,20 @@
 #!/usr/local/bin python3
-# setting.py : experimental setting for test
+# setting.py : experimental settings for test
 
 """
-variables:        
-    floors int:
-        floor_num is the size of HOLE list. 
-    food_amounts int:
-        food_amounts is the initial food amount.
+Configuration variables for The Platform simulation.
+
+Variables:
+    floors: Number of inhabitants in the experimental building
+    experimental_food_range: Range of food amounts to test
+    number_of_rounds: Number of simulation rounds per experiment
 """
 
-floors= 1000
+# Number of floors (inhabitants) in the experimental building
+floors = 1000
+
+# Range of food amounts to test (start, stop, step)
 experimental_food_range = range(0, 100, 10)
-number_of_rounds=100
+
+# Number of simulation rounds per experiment
+number_of_rounds = 100
